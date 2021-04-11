@@ -9,11 +9,11 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import cn.edu.lingnan.dto.ScoreDto;
-import cn.edu.lingnan.dto.StudentDto;
+import cn.edu.lingnan.dto.CountryDto;
 import cn.edu.lingnan.util.DataAccess;
 
 /**
- * 对score表的数据操作类
+ * 对c_v表的数据操作类
  */
 public class ScoreDao {
 	//查找所有成绩
@@ -24,13 +24,13 @@ public class ScoreDao {
 		ResultSet rs = null;
 		try {
 			conn = DataAccess.getConnection();
-			String sql = "select * from score";
+			String sql = "select * from c_v";
 			prep = conn.prepareStatement(sql);
 			rs = prep.executeQuery();
 			while (rs.next()) {
 				ScoreDto s = new ScoreDto();
-				s.setSid(rs.getString("sid"));
-				s.setCid(rs.getString("cid"));
+				s.setSid(rs.getString("country_id"));
+				s.setCid(rs.getString("vac_id"));
 				v.add(s);
 			}
 
@@ -43,26 +43,26 @@ public class ScoreDao {
 	}
 
 
-	// 实现按sid和cid查找成绩
-	public int findScoreBySidAndCid(String _sid, String _cid) {
-		int _score = 0;
+	// 实现按country_id和vac_id查找成绩
+	public String findScoreBySidAndCid(String _country_id, String _vac_id) {
+		String _vac_over_num = null;
 		Connection conn = null;
 //		Statement stat = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
+			conn=DataAccess.getConnection();
 //			stat = conn.createStatement();
-//			String sql = "select * from score where sid='" + _sid + "' and cid='" + _cid + "'";
-			String sql = "select * from score where sid=? and cid=?";
+//			String sql = "select * from c_v where country_id='" + _country_id + "' and vac_id='" + _vac_id + "'";
+			String sql = "select * from c_v where country_id=? and vac_id=?";
 			prep = conn.prepareStatement(sql);
-			prep.setString(1, _sid);
-			prep.setString(2, _cid);
+			prep.setString(1, _country_id);
+			prep.setString(2, _vac_id);
 //			rs = stat.executeQuery(sql);
 			rs = prep.executeQuery();
 			if (rs.next())
-				_score = rs.getInt("score");
+				_vac_over_num = rs.getString("vac_over_num");
 		} catch (ClassNotFoundException e) {
 			System.out.println("判断一下是不是你的MySql连接JAR包出了问题.....");
 			e.printStackTrace();
@@ -82,7 +82,7 @@ public class ScoreDao {
 				e.printStackTrace();
 			}
 		}
-		return _score;
+		return _vac_over_num;
 	}
 
 	// 插入一条分数信息
@@ -90,54 +90,54 @@ public class ScoreDao {
 
 	public int insertInfotoScore(ScoreDto _sd) {
 		int flag = 0;
-		int flagStudent = 0;
-		int flagCourse = 0;
+		int flagCountry = 0;
+		int flagVac = 0;
 		Connection conn = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
-		String _sid = _sd.getSid();
-		String _cid = _sd.getCid();
-		int _score = _sd.getScore();
+		String _country_id = _sd.getSid();
+		String _vac_id = _sd.getCid();
+		String _vac_over_num = _sd.getScore();
 		try {
 			conn = DataAccess.getConnection();
 			// 查分数表
-			prep = conn.prepareStatement("select * from score where sid=? and cid=?");
-			prep.setString(1, _sid);
-			prep.setString(2, _cid);
+			prep = conn.prepareStatement("select * from c_v where country_id=? and vac_id=?");
+			prep.setString(1, _country_id);
+			prep.setString(2, _vac_id);
 			rs = prep.executeQuery();
 			if (rs.next())
 				return 4;
 			rs.close();
 			prep.close();
 			// 查学生表
-			prep = conn.prepareStatement("select * from student where sid=?");
-			prep.setString(1, _sid);
+			prep = conn.prepareStatement("select * from country where country_id=?");
+			prep.setString(1, _country_id);
 			rs = prep.executeQuery();
 			if (rs.next())
-				flagStudent = 1;
+				flagCountry = 1;
 			rs.close();
 			prep.close();
 			// 查课程表
-			prep = conn.prepareStatement("select * from course where cid=?");
-			prep.setString(1, _cid);
+			prep = conn.prepareStatement("select * from vac where vac_id=?");
+			prep.setString(1, _vac_id);
 			rs = prep.executeQuery();
 			if (rs.next())
-				flagCourse = 1;
+				flagVac = 1;
 			rs.close();
 			prep.close();
-			if (flagStudent == 1 && flagCourse == 1) {// 意味着可以执行插入操作
-				String sql = "insert into score values(?,?,?)";// 一条语句写错两处地方。。。
+			if (flagCountry == 1 && flagVac == 1) {// 意味着可以执行插入操作
+				String sql = "insert into c_v values(?,?,?)";// 一条语句写错两处地方。。。
 				prep = conn.prepareStatement(sql);
-				prep.setString(1, _sid);
-				prep.setString(2, _cid);
-				prep.setInt(3, _score);
+				prep.setString(1, _country_id);
+				prep.setString(2, _vac_id);
+				prep.setString(3, _vac_over_num);
 				prep.executeUpdate();
 				flag = 1;// 若上方prep.executeUpdate()失败将直接跳转到catch块，flag不会被置为1
 			}else
-				if(flagStudent == 0 && flagCourse == 1)
+				if(flagCountry == 0 && flagVac == 1)
 					flag=3;
 				else
-					if(flagStudent == 1 && flagCourse == 0)
+					if(flagCountry == 1 && flagVac == 0)
 					flag=2;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -154,8 +154,8 @@ public class ScoreDao {
 		try {
 			conn = DataAccess.getConnection();
 			prep = conn.prepareStatement
-	("update score set score =? where sid=? and cid=?");
-			prep.setInt(1, _sd.getScore());
+	("update c_v set c_v =? where country_id=? and vac_id=?");
+			prep.setString(1, _sd.getScore());
 			prep.setString(2, _sd.getSid());
 			prep.setString(3, _sd.getCid());
 			prep.executeUpdate();

@@ -1,24 +1,18 @@
 package cn.edu.lingnan.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Vector;
-
-import cn.edu.lingnan.dto.ScoreDto;
-import cn.edu.lingnan.dto.StudentDto;
+import cn.edu.lingnan.dto.CountryDto;
 import cn.edu.lingnan.util.DataAccess;
+
+import java.sql.*;
+import java.util.Vector;
 
 /**
  * 完成对学生表的数据操作类
  */
-public class StudentDao {
-    //通过sid找学生
-    public String findStudentBySid(String _sid) {
-        String _sname = null;
+public class CountryDao {
+    //通过country_id找学生
+    public String findCountryBySid(String _country_id) {
+        String _country_name = null;
         Connection conn = null;
         PreparedStatement prep = null;
         ResultSet rs = null;
@@ -27,12 +21,12 @@ public class StudentDao {
 //            conn = DriverManager.getConnection
 //                    ("jdbc:mysql://localhost:3306/school", "root", "123");
             conn = DataAccess.getConnection();
-            String sql = "select * from student where sid=?";
+            String sql = "select * from country where country_id=?";
             prep = conn.prepareStatement(sql);
-            prep.setString(1, _sid);
+            prep.setString(1, _country_id);
             rs = prep.executeQuery();
             if (rs.next())
-                _sname = rs.getString("sname");
+                _country_name = rs.getString("country_name");
         } catch (ClassNotFoundException e) {
             System.out.println("检查Mysql的jar导入是否正确");
             e.printStackTrace();
@@ -50,10 +44,10 @@ public class StudentDao {
                 e.printStackTrace();
             }
         }
-        return _sname;
+        return _country_name;
     }
     // 实现按用户名和密码进行查找，存在即返回1。
-    public boolean findStudentByNameAndPassword(String _sname, String _password) {
+    public boolean findCountryByNameAndPassword(String _country_name, String _people) {
         boolean flag = false;
         Connection conn = null;
 //		Statement stat = null;
@@ -64,13 +58,13 @@ public class StudentDao {
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
 //			
 ////			stat = conn.createStatement();
-////			String sql = "select * from student where sname='" + _sname + "' and " + "password ='" + _password + "'";// 写'"
+////			String sql = "select * from country where country_name='" + _country_name + "' and " + "people ='" + _people + "'";// 写'"
 ////			rs = stat.executeQuery(sql);
 //			
-//			String sql = "select * from student where sname=? and password =?";// 写'"
+//			String sql = "select * from country where country_name=? and people =?";// 写'"
 //			prep =conn.prepareStatement(sql);
-//			prep.setString(1,_sname);
-//			prep.setString(2,_password);
+//			prep.setString(1,_country_name);
+//			prep.setString(2,_people);
 //			rs= prep.executeQuery();
 //			if (rs.next())
 //				flag = true;
@@ -99,10 +93,10 @@ public class StudentDao {
         //---------------------------------省去了数据库连接的try写法:
         try {
             conn = DataAccess.getConnection();
-            String sql = "select * from student where sname=? and password =?";// 写'"
+            String sql = "select * from country where country_name=? and people =?";// 写'"
             prep = conn.prepareStatement(sql);
-            prep.setString(1, _sname);
-            prep.setString(2, _password);
+            prep.setString(1, _country_name);
+            prep.setString(2, _people);
             rs = prep.executeQuery();
             if (rs.next())
                 flag = true;
@@ -117,8 +111,8 @@ public class StudentDao {
 
 
     // 查找所有的学生信息
-    public Vector<StudentDto> findAllStudent() {
-        Vector<StudentDto> v = new Vector<StudentDto>();
+    public Vector<CountryDto> findAllCountry() {
+        Vector<CountryDto> v = new Vector<CountryDto>();
         Connection conn = null;
 //		Statement stat = null;
         PreparedStatement prep = null;
@@ -128,16 +122,16 @@ public class StudentDao {
 //			Class.forName("com.mysql.jdbc.Driver");
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
 ////			stat = conn.createStatement();
-            String sql = "select * from student";
+            String sql = "select * from country";
 //			rs = stat.executeQuery(sql);
             prep = conn.prepareStatement(sql);
             rs = prep.executeQuery();
             while (rs.next()) {
-                StudentDto s = new StudentDto();
-                s.setSid(rs.getString("sid"));
-                s.setSname(rs.getString("sname"));
-                s.setPassword(rs.getString("password"));
-                s.setSuperuser(rs.getInt("superuser"));
+                CountryDto s = new CountryDto();
+                s.setSid(rs.getString("country_id"));
+                s.setSname(rs.getString("country_name"));
+                s.setPassword(rs.getString("people"));
+                s.setSuperuser(rs.getInt("vac_able"));
                 v.add(s);
             }
 
@@ -162,7 +156,7 @@ public class StudentDao {
 
 
     //插入一条学生记录
-    public int insertInfoToStudent(StudentDto _sd) {
+    public int insertInfoToCountry(CountryDto _sd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
@@ -172,7 +166,7 @@ public class StudentDao {
 //			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
             conn = DataAccess.getConnection();
             String sql =
-                    "insert into student values(?,?,?,?)";//一条语句写错两处地方。。。
+                    "insert into country values(?,?,?,?)";//一条语句写错两处地方。。。
             prep = conn.prepareStatement(sql);
             prep.setString(1, _sd.getSid());
             prep.setString(2, _sd.getSname());
@@ -205,14 +199,14 @@ public class StudentDao {
     }
 
     //更新学生表_学生名字
-    public int updataStudentSname(StudentDto _sd) {
+    public int updataCountrySname(CountryDto _sd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
         try {
             conn = DataAccess.getConnection();
             prep = conn.prepareStatement
-                    ("update student set sname =? where sid=?");
+                    ("update country set country_name =? where country_id=?");
             prep.setString(1, _sd.getSname());
             prep.setString(2, _sd.getSid());
             prep.executeUpdate();
@@ -227,14 +221,14 @@ public class StudentDao {
 
 
     //更新学生表_学生密码
-    public int updataStudentPassword(StudentDto _sd) {
+    public int updataCountryPassword(CountryDto _sd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
         try {
             conn = DataAccess.getConnection();
             prep = conn.prepareStatement
-                    ("update student set password =? where sid=?");
+                    ("update country set people =? where country_id=?");
             prep.setString(1, _sd.getPassword());
             prep.setString(2, _sd.getSid());
             prep.executeUpdate();
@@ -248,14 +242,14 @@ public class StudentDao {
     }
 
     //更新学生表_学生权限
-    public int updataStudentSuperuser(StudentDto _sd) {
+    public int updataCountrySuperuser(CountryDto _sd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
         try {
             conn = DataAccess.getConnection();
             prep = conn.prepareStatement
-                    ("update student set superuser =? where sid=?");
+                    ("update country set vac_able =? where country_id=?");
             prep.setInt(1, _sd.getSuperuser());
             prep.setString(2, _sd.getSid());
             prep.executeUpdate();
@@ -270,7 +264,7 @@ public class StudentDao {
 
 
     //删除一条学生记录
-    public boolean deleteStudent(String _sid) throws SQLException {
+    public boolean deleteCountry(String _country_id) throws SQLException {
         boolean flag = false;
         Connection conn = null;
         PreparedStatement prep1 = null;
@@ -283,9 +277,9 @@ public class StudentDao {
             //----------通过学生编号找到待删除的课程，存入动态数组中------------------------
             Vector<String> v = new Vector<String>();
             String sql0 =
-                    "select * from score where sid=?";
+                    "select * from score where country_id=?";
             prep1 = conn.prepareStatement(sql0);
-            prep1.setString(1, _sid);
+            prep1.setString(1, _country_id);
             rs1 = prep1.executeQuery();
             System.out.println("567567");
 
@@ -318,16 +312,16 @@ public class StudentDao {
             conn.setAutoCommit(false);
             //先删分数表
             String sql1 =
-                    "delete from score where sid=?";
+                    "delete from score where country_id=?";
             prep1 = conn.prepareStatement(sql1);
-            prep1.setString(1, _sid);
+            prep1.setString(1, _country_id);
             prep1.executeUpdate();
             prep1.close();
             //再删学生表
             String sql2 =
-                    "delete from student where sid=?";//------------------------
+                    "delete from country where country_id=?";//------------------------
             prep1 = conn.prepareStatement(sql2);
-            prep1.setString(1, _sid);
+            prep1.setString(1, _country_id);
             prep1.executeUpdate();
             //最后删课程表
             for (String s : v) {

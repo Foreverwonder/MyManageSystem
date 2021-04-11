@@ -3,32 +3,31 @@ package cn.edu.lingnan.dao;
 import java.sql.*;
 import java.util.Vector;
 
-import cn.edu.lingnan.dto.StudentDto;
+import cn.edu.lingnan.dto.CountryDto;
 import com.sun.net.httpserver.Authenticator.Result;
-import cn.edu.lingnan.dto.CourseDto;
+import cn.edu.lingnan.dto.VacDto;
 import cn.edu.lingnan.dto.ScoreDto;
 import cn.edu.lingnan.util.DataAccess;
 
 /**
- * 对课表course的操作类
+ * 对课表vac的操作类
  */
-public class CourseDao {
-    //通过cid找name
-    public String findCnameByCid(String _cid) {
-        String _cname = null;
+public class VacDao {
+    //通过vac_id找name
+    public String findCnameByCid(String _vac_id) {
+        String _vac_name = null;
         Connection conn = null;
         PreparedStatement prep = null;
         ResultSet rs = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection
-                    ("jdbc:mysql://localhost:3306/school", "root", "123");
-            String sql = "select * from course where cid=?";
+            conn=DataAccess.getConnection();
+            String sql = "select * from vac where vac_id=?";
             prep = conn.prepareStatement(sql);
-            prep.setString(1, _cid);
+            prep.setString(1, _vac_id);
             rs = prep.executeQuery();
             if (rs.next())
-                _cname = rs.getString("cname");
+                _vac_name = rs.getString("vac_name");
         } catch (ClassNotFoundException e) {
             System.out.println("检查Mysql的jar导入是否正确");
             e.printStackTrace();
@@ -46,21 +45,21 @@ public class CourseDao {
                 e.printStackTrace();
             }
         }
-        return _cname;
+        return _vac_name;
     }
 
 
     //课程表插入一条信息
-    public int insertInfoToCourse(CourseDto _cd) {
+    public int insertInfoToVac(VacDto _cd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
         Result rs = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
+            conn=DataAccess.getConnection();
             String sql =
-                    "insert into course values(?,?)";
+                    "insert into vac values(?,?)";
             prep = conn.prepareStatement(sql);
             prep.setString(1, _cd.getCid());
             prep.setString(2, _cd.getCname());
@@ -88,15 +87,15 @@ public class CourseDao {
     }
 
     //更新课程表
-    //cid是主键
-    public int updataCourse(CourseDto _sd) {
+    //vac_id是主键
+    public int updataVac(VacDto _sd) {
         int flag = 0;
         Connection conn = null;
         PreparedStatement prep = null;
         try {
             conn = DataAccess.getConnection();
             prep = conn.prepareStatement
-                    ("update course set cname =? where cid=?");
+                    ("update vac set vac_name =? where vac_id=?");
             prep.setString(1, _sd.getCname());
             prep.setString(2, _sd.getCid());
             prep.executeUpdate();
@@ -110,8 +109,8 @@ public class CourseDao {
     }
 
 
-    //删除课程表(若该cid在score表中只有0条记录，则直接删除，否则不删除)
-    public boolean deleteCourse(String _cid) throws SQLException {
+    //删除课程表(若该vac_id在c_v表中只有0条记录，则直接删除，否则不删除)
+    public boolean deleteVac(String _vac_id) throws SQLException {
         boolean flag = false;
         Connection conn = null;
         PreparedStatement prep1 = null;
@@ -124,16 +123,16 @@ public class CourseDao {
             //----------通过学生编号找到待删除的课程，存入动态数组中------------------------
 //            Vector<String> v = new Vector<String>();
             String sql0 =
-                    "select count(*) as num from score where cid=?";
+                    "select count(*) as num from c_v where vac_id=?";
             prep1 = conn.prepareStatement(sql0);
-            prep1.setString(1, _cid);
+            prep1.setString(1, _vac_id);
             rs1 = prep1.executeQuery();
             rs1.next();
             if (Integer.parseInt(rs1.getString("num")) == 0) {
-//                System.out.println("要删除的课程号：" + _cid);
-                String sql1 = "delete from course where cid=?";
+//                System.out.println("要删除的课程号：" + _vac_id);
+                String sql1 = "delete from vac where vac_id=?";
                 prep1 = conn.prepareStatement(sql1);
-                prep1.setString(1, _cid);
+                prep1.setString(1, _vac_id);
                 prep1.executeUpdate();
             flag=true;
             }
@@ -146,20 +145,20 @@ public class CourseDao {
         return flag;
     }
     // 查找所有的课程信息（改）
-    public Vector<CourseDto> findAllCourse() {
-        Vector<CourseDto> v = new Vector<>();
+    public Vector<VacDto> findAllVac() {
+        Vector<VacDto> v = new Vector<>();
         Connection conn = null;
         PreparedStatement prep = null;
         ResultSet rs = null;
         try {
             conn = DataAccess.getConnection();
-            String sql = "select * from course";
+            String sql = "select * from vac";
             prep = conn.prepareStatement(sql);
             rs = prep.executeQuery();
             while (rs.next()) {
-                CourseDto c = new CourseDto();
-                c.setCid(rs.getString("cid"));
-                c.setCname(rs.getString("cname"));
+                VacDto c = new VacDto();
+                c.setCid(rs.getString("vac_id"));
+                c.setCname(rs.getString("vac_name"));
                 v.add(c);
             }
         } catch (SQLException e) {

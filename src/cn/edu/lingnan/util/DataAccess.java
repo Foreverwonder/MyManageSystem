@@ -11,7 +11,7 @@ public class DataAccess {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/school", "root", "123");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/covid_19", "root", "123");
 		} catch (ClassNotFoundException e) {
 			System.out.println("判断一下是不是你的MySql连接JAR包出了问题.....");
 			e.printStackTrace();

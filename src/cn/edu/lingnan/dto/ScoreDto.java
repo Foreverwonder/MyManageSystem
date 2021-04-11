@@ -1,25 +1,25 @@
 package cn.edu.lingnan.dto;
 
 public class ScoreDto {
-	private String sid;
-	private String cid;
-	private int score;
+	private String country_id;
+	private String vac_id;
+	private String vac_over_num;
 	public String getSid() {
-		return sid;
+		return country_id;
 	}
-	public void setSid(String sid) {
-		this.sid = sid;
+	public void setSid(String country_id) {
+		this.country_id = country_id;
 	}
 	public String getCid() {
-		return cid;
+		return vac_id;
 	}
-	public void setCid(String cid) {
-		this.cid = cid;
+	public void setCid(String vac_id) {
+		this.vac_id = vac_id;
 	}
-	public int getScore() {
-		return score;
+	public String getScore() {
+		return vac_over_num;
 	}
-	public void setScore(int score) {
-		this.score = score;
+	public void setScore(String vac_over_num) {
+		this.vac_over_num = vac_over_num;
 	}
 }

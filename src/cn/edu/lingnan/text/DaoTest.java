@@ -1,24 +1,23 @@
 package cn.edu.lingnan.text;
 /**
- * 完整功能：查找所有学生，查找所有课程、按sid和cid查成绩
- * 添加学生，添加课程、按sid查学生
- * 删除学生，删除课程、按cid查课程
+ * 完整功能：查找所有学生，查找所有课程、按country_id和vac_id查成绩
+ * 添加学生，添加课程、按country_id查学生
+ * 删除学生，删除课程、按vac_id查课程
  * 几个方法的DataAccess的关闭方法有待优化
  *
- * <p>
- * 没写: ScoreDao（updataScore）
- * StudentDao(updataStudentSname、updataStudentPassword、updataStudentSuperuser）
- * CourseDao(updataCourse)
+ * ScoreDao（updataScore）
+ * CountryDao(updataCountrySname、updataCountryPassword、updataCountrySuperuser）
+ * VacDao(updataVac)
  *
  * 几个方法的DataAccess的连接数据库方法，关闭方法有待优化
  */
 
-import cn.edu.lingnan.dao.CourseDao;
+import cn.edu.lingnan.dao.VacDao;
 import cn.edu.lingnan.dao.ScoreDao;
-import cn.edu.lingnan.dao.StudentDao;
-import cn.edu.lingnan.dto.CourseDto;
+import cn.edu.lingnan.dao.CountryDao;
+import cn.edu.lingnan.dto.VacDto;
 import cn.edu.lingnan.dto.ScoreDto;
-import cn.edu.lingnan.dto.StudentDto;
+import cn.edu.lingnan.dto.CountryDto;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -26,12 +25,12 @@ import java.util.Vector;
 
 public class DaoTest {
     public static Scanner scanf = new Scanner(System.in);
-    public static StudentDao sd = new StudentDao();
+    public static CountryDao sd = new CountryDao();
     public static ScoreDao scd = new ScoreDao();
-    public static CourseDao cd = new CourseDao();
+    public static VacDao cd = new VacDao();
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("-------------------Welcome to the student achievement management system!------------- ");
+        System.out.println("-------------------Welcome to the country achievement management system!------------- ");
         System.out.println("-------------------Please select the corresponding number to test（Main Menu）------------- ");
         System.out.println("--1.See the information--2.Add the information--3.Modify the information--4.Delete the information--5.exit------ ");
         while (scanf.hasNextLine()) {
@@ -50,7 +49,7 @@ public class DaoTest {
             } else {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
-            System.out.println("-------------------Welcome to the student achievement management system!------------- ");
+            System.out.println("-------------------Welcome to the country achievement management system!------------- ");
             System.out.println("-------------------Please select the corresponding number to test（Main Menu）------------- ");
             System.out.println("--1.See the information--2.Add the information--3.Modify the information--4.Delete the information--5.exit------ ");
         }
@@ -64,11 +63,11 @@ public class DaoTest {
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-//                findAllStudent();增加一级菜单
-                findStudent();
+//                findAllCountry();增加一级菜单
+                findCountry();
             } else if (str.equals("2")) {
-//                findAllCourse();增加一级菜单
-                findCourse();
+//                findAllVac();增加一级菜单
+                findVac();
             } else if (str.equals("3")) {
 //                findAllScore();增加一级菜单
                 findScore();
@@ -90,9 +89,9 @@ public class DaoTest {
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                insertStudent();
+                insertCountry();
             } else if (str.equals("2")) {
-                insertCourse();
+                insertVac();
             } else if (str.equals("3")) {
                 insertScore();
             } else if (str.equals("4")) {
@@ -114,9 +113,9 @@ public class DaoTest {
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                updateStudent();
+                updateCountry();
             } else if (str.equals("2")) {
-                updateCourse();
+                updateVac();
             } else if (str.equals("3")) {
                 updateScore();
             } else if (str.equals("4")) {
@@ -137,9 +136,9 @@ public class DaoTest {
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                deleteStudent();
+                deleteCountry();
             } else if (str.equals("2")) {
-                deleteCourse();
+                deleteVac();
             } else if (str.equals("3")) {
 //                deleteScore();
             } else if (str.equals("4")) {
@@ -157,28 +156,28 @@ public class DaoTest {
     //----------------------三级菜单-----------------------------------
 
     //查找（三级菜单）
-    public static void findStudent() {
+    public static void findCountry() {
         System.out.println("------------Please select the corresponding number to test（Find Menu of 3th）------------- ");
         System.out.println("----1通过姓名和密码查学生--2通过ID查找学生--3查看所有学生--4回到上一级--");
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                String _sname = null;
-                String _password = null;
+                String _country_name = null;
+                String _people = null;
                 System.out.println("请输入需要查找的学生姓名：");
-                _sname = scanf.nextLine();
+                _country_name = scanf.nextLine();
                 System.out.println("请输入需要查找的学生密码：");
-                _password = scanf.nextLine();
-                if (sd.findStudentByNameAndPassword(_sname, _password) == true) {
+                _people = scanf.nextLine();
+                if (sd.findCountryByNameAndPassword(_country_name, _people) == true) {
                     System.out.println("该学生在本校存在");
                 }
             } else if (str.equals("2")) {
-                String _sid = null;
+                String _country_id = null;
                 System.out.println("请输入需要查找的学生ID：");
-                _sid = scanf.nextLine();
-                System.out.println(sd.findStudentBySid(_sid));
+                _country_id = scanf.nextLine();
+                System.out.println(sd.findCountryBySid(_country_id));
             } else if (str.equals("3")) {
-                findAllStudent();
+                findAllCountry();
             } else if (str.equals("4")) {
                 break;
             } else {
@@ -190,18 +189,18 @@ public class DaoTest {
         }
     }
 
-    public static void findCourse() {
+    public static void findVac() {
         System.out.println("------------Please select the corresponding number to test（Find Menu of 3th）------------- ");
         System.out.println("----1通过课程号查课程--2查看所有课程--3回到上一级--");
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                String _cid = null;
+                String _vac_id = null;
                 System.out.println("请输入需要查找的课程ID：");
-                _cid = scanf.nextLine();
-                System.out.println(cd.findCnameByCid(_cid));
+                _vac_id = scanf.nextLine();
+                System.out.println(cd.findCnameByCid(_vac_id));
             } else if (str.equals("2")) {
-                findAllCourse();
+                findAllVac();
             } else if (str.equals("3")) {
                 break;
             } else {
@@ -218,13 +217,13 @@ public class DaoTest {
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
-                String _sid = null;
-                String _cid = null;
+                String _country_id = null;
+                String _vac_id = null;
                 System.out.println("请输入需要查找成绩的学生ID：");
-                _sid = scanf.nextLine();
+                _country_id = scanf.nextLine();
                 System.out.println("请输入需要查找成绩的课程ID：");
-                _cid = scanf.nextLine();
-                System.out.println(scd.findScoreBySidAndCid(_sid, _cid));
+                _vac_id = scanf.nextLine();
+                System.out.println(scd.findScoreBySidAndCid(_country_id, _vac_id));
             } else if (str.equals("2")) {
                 findAllScore();
             } else if (str.equals("3")) {
@@ -238,12 +237,12 @@ public class DaoTest {
     }
 
     //查找所有学生
-    public static void findAllStudent() {
-        Vector<StudentDto> v = new Vector<>();
-        v = sd.findAllStudent();
+    public static void findAllCountry() {
+        Vector<CountryDto> v = new Vector<>();
+        v = sd.findAllCountry();
         System.out.println("-----------所有学生信息如下----------------");
         System.out.println("学生编号 学生姓名 \t学生密码 学生权限");
-        for (StudentDto s : v) {
+        for (CountryDto s : v) {
             System.out.println(s.getSid() + " \t" + s.getSname() + " \t" + s.getPassword() + " \t" + s.getSuperuser());
         }
         System.out.println("--------------------------------------------");
@@ -262,20 +261,20 @@ public class DaoTest {
     }
 
     //查找所有课程（改）
-    public static void findAllCourse() {
-        Vector<CourseDto> v = new Vector<>();
-        v = cd.findAllCourse();
+    public static void findAllVac() {
+        Vector<VacDto> v = new Vector<>();
+        v = cd.findAllVac();
         System.out.println("-----------所有学生信息如下----------------");
         System.out.println("课程编号 \t课程名");
-        for (CourseDto s : v) {
+        for (VacDto s : v) {
             System.out.println(" \t" + s.getCid() + " \t" + s.getCname());
         }
         System.out.println("--------------------------------------------");
     }
 
     //--------增加学生（三级菜单）---------------------------
-    public static void insertStudent() {
-        StudentDto s = new StudentDto();
+    public static void insertCountry() {
+        CountryDto s = new CountryDto();
         System.out.println("请输入需要新增的学生ID：");
         s.setSid(scanf.nextLine());
         System.out.println("请输入需要新增的学生姓名：");
@@ -286,20 +285,20 @@ public class DaoTest {
         //下一行转换数字就很妙：
 //        s.setSuperuser(scanf.nextInt());这样会不方便，正确处理方法见下一行
         s.setSuperuser(Integer.parseInt(scanf.nextLine()));
-        if (sd.insertInfoToStudent(s) == 1) {
+        if (sd.insertInfoToCountry(s) == 1) {
             System.out.println("新增学生信息成功！");
         } else
             System.out.println("新增学生信息失败");
     }
 
     //---------------增加课程（三级）---------------------------------
-    public static void insertCourse() {
-        CourseDto c = new CourseDto();
+    public static void insertVac() {
+        VacDto c = new VacDto();
         System.out.println("请输入需要新增的课程ID：");
         c.setCid(scanf.nextLine());
         System.out.println("请输入需要新增的课程名称");
         c.setCname(scanf.nextLine());
-        if (cd.insertInfoToCourse(c) == 1) {
+        if (cd.insertInfoToVac(c) == 1) {
             System.out.println("新增课程信息成功！");
         } else
             System.out.println("新增课程信息失败");
@@ -308,12 +307,12 @@ public class DaoTest {
     //---------------增加分数（三级）---------------------------------
     public static void insertScore() {
         ScoreDto s = new ScoreDto();
-        System.out.println("请输入需要新增分数的sid：");
+        System.out.println("请输入需要新增分数的country_id：");
         s.setSid(scanf.nextLine());
-        System.out.println("请输入需要新增分数的cid");
+        System.out.println("请输入需要新增分数的vac_id");
         s.setCid(scanf.nextLine());
-        System.out.println("请输入需要新增的分数score");
-        s.setScore(Integer.parseInt(scanf.nextLine()));
+        System.out.println("请输入需要新增的分数vac_over_num");
+        s.setScore(scanf.nextLine());
         if (scd.insertInfotoScore(s) == 1) {
             System.out.println("新增课程信息成功！");
         } else if (scd.insertInfotoScore(s) == 0) {
@@ -328,10 +327,10 @@ public class DaoTest {
             System.out.println("新增课程信息失败(未知错误)");
     }
     //---------------增加学生（三级三功能）---------------------------------
-    public static void updateStudent() {
+    public static void updateCountry() {
         System.out.println("------------Please select the corresponding number to test（Update Menu of 3th）------------- ");
         System.out.println("----1更新学生名字--2更新学生密码--3更新学生权限--4回到上一级--");
-        StudentDto s = new StudentDto();
+        CountryDto s = new CountryDto();
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
@@ -339,7 +338,7 @@ public class DaoTest {
                 s.setSid(scanf.nextLine());
                 System.out.println("请输入要更改的学生名字");
                 s.setSname(scanf.nextLine());
-                if (sd.updataStudentSname(s) == 1) {
+                if (sd.updataCountrySname(s) == 1) {
                     System.out.println("更改名字成功");
                 } else System.out.println("更改名字失败");
             } else if (str.equals("2")) {
@@ -347,7 +346,7 @@ public class DaoTest {
                 s.setSid(scanf.nextLine());
                 System.out.println("请输入要更改的学生密码");
                 s.setPassword(scanf.nextLine());
-                if (sd.updataStudentPassword(s) == 1) {
+                if (sd.updataCountryPassword(s) == 1) {
                     System.out.println("更改密码成功");
                 } else System.out.println("更改密码失败");
             } else if (str.equals("3")) {
@@ -355,7 +354,7 @@ public class DaoTest {
                 s.setSid(scanf.nextLine());
                 System.out.println("请输入要更改的学生权限");
                 s.setSuperuser(Integer.parseInt(scanf.nextLine()));
-                if (sd.updataStudentSuperuser(s) == 1) {
+                if (sd.updataCountrySuperuser(s) == 1) {
                     System.out.println("更改权限成功");
                 } else System.out.println("更改权限失败");
             } else if (str.equals("4")) {
@@ -369,13 +368,13 @@ public class DaoTest {
         }
     }
     //-----------------------更新课程（三级菜单）------------------------------------------
-    public static void updateCourse() {
-        CourseDto c = new CourseDto();
-        System.out.println("请输入更新课程名的cid：");
+    public static void updateVac() {
+        VacDto c = new VacDto();
+        System.out.println("请输入更新课程名的vac_id：");
         c.setCid(scanf.nextLine());
-        System.out.println("请输入需要更新的cname：");
+        System.out.println("请输入需要更新的vac_name：");
         c.setCname(scanf.nextLine());
-        if (cd.updataCourse(c) == 1) {
+        if (cd.updataVac(c) == 1) {
             System.out.println("更新课程成功");
         } else
             System.out.println("更新失败");
@@ -384,12 +383,12 @@ public class DaoTest {
     //-----------------------更新分数表---------------------------------------------------------------------
     public static void updateScore() {
         ScoreDto c = new ScoreDto();
-        System.out.println("请输入需要更新分数的sid：");
+        System.out.println("请输入需要更新分数的country_id：");
         c.setSid(scanf.nextLine());
-        System.out.println("请输入需要更新分数的cid：");
+        System.out.println("请输入需要更新分数的vac_id：");
         c.setCid(scanf.nextLine());
         System.out.println("请输入需要更新的分数");
-        c.setScore(Integer.parseInt(scanf.nextLine()));
+        c.setScore(scanf.nextLine());
         if (scd.updataScore(c) == 1) {
             System.out.println("更新分数成功");
         } else
@@ -398,20 +397,20 @@ public class DaoTest {
 
 
     //-----------------------删除学生（三级菜单）------------------------------------------
-    public static void deleteStudent() throws SQLException {
+    public static void deleteCountry() throws SQLException {
         System.out.println("请输入要删除的学生ID：");
-        String _sid = scanf.nextLine();
-        if (sd.deleteStudent(_sid) == true) {
+        String _country_id = scanf.nextLine();
+        if (sd.deleteCountry(_country_id) == true) {
             System.out.println("删除学生信息成功");
         } else
             System.out.println("删除学生信息失败");
     }
 
     //-----------------------删除课程（三级菜单）------------------------------------------
-    public static void deleteCourse() throws SQLException {
+    public static void deleteVac() throws SQLException {
         System.out.println("请输入要删除的课程ID：");
-        String _cid = scanf.nextLine();
-        if (cd.deleteCourse(_cid) == true) {
+        String _vac_id = scanf.nextLine();
+        if (cd.deleteVac(_vac_id) == true) {
             System.out.println("删除课程信息成功");
         } else
             System.out.println("删除课程信息失败");
