@@ -1,8 +1,6 @@
 package cn.edu.lingnan.text;
 /**
- * 要写一个删除接种情况（V_C）才行
- *h还有很多Country_id之类的没修改变量名字
- *
+ *完结撒花
  */
 
 import cn.edu.lingnan.dao.VacDao;
@@ -23,7 +21,7 @@ public class DaoTest {
     public static VacDao cd = new VacDao();
 
     public static void main(String[] args) throws SQLException {
-        System.out.println("-------------------Welcome to the country achievement management system!------------- ");
+        System.out.println("-------------------Welcome to the World Vaccination Information Management System!------------- ");
         System.out.println("-------------------Please select the corresponding number to test（Main Menu）------------- ");
         System.out.println("--1.See the information--2.Add the information--3.Modify the information--4.Delete the information--5.exit------ ");
         while (scanf.hasNextLine()) {
@@ -42,7 +40,7 @@ public class DaoTest {
             } else {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
-            System.out.println("-------------------Welcome to the country achievement management system!------------- ");
+            System.out.println("-------------------Welcome to the World Vaccination Information Management System!------------- ");
             System.out.println("-------------------Please select the corresponding number to test（Main Menu）------------- ");
             System.out.println("--1.See the information--2.Add the information--3.Modify the information--4.Delete the information--5.exit------ ");
         }
@@ -65,7 +63,7 @@ public class DaoTest {
             } else {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
-            System.out.println("-------------------Please select the corresponding number to test（Find Menu）------------- ");
+            System.out.println("------------Please select the corresponding number to test（Find Menu of 2th）------------- ");
             System.out.println("----1查看国家--2查看疫苗--3查看接种情况--4回到上一级--");
         }
     }
@@ -118,7 +116,7 @@ public class DaoTest {
     //---------------------------删除二级菜单------------------------------------------
     public static void delete() throws SQLException {
         System.out.println("------------Please select the corresponding number to test（Delete Menu of 2th）------------- ");
-        System.out.println("----1删除国家--2删除疫苗--3删除接种情况--4回到上一级--");//其实只能1删除国家，2、3办不到
+        System.out.println("----1删除国家--2删除疫苗--3删除接种情况--4回到上一级--");
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
@@ -154,7 +152,7 @@ public class DaoTest {
                 System.out.println("请输入需要查找的国家人口：");
                 _people = scanf.nextLine();
                 if (sd.findCountryByNameAndPeople(_country_name, _people) == true) {
-                    System.out.println("该国家在本校存在");
+                    System.out.println("该国家在地球存在");
                 }
             } else if (str.equals("2")) {
                 String _country_id = null;
@@ -196,9 +194,9 @@ public class DaoTest {
         }
     }
 
-    public static void findC_V() {//未完成
+    public static void findC_V() {
         System.out.println("------------Please select the corresponding number to test（Find Menu of 3th）------------- ");
-        System.out.println("----1通过国家号疫苗号查接种情况--2查看所有接种情况--3回到上一级--");
+        System.out.println("----1通过国家号与疫苗号查接种情况--2查看所有接种情况--3回到上一级--");
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
@@ -217,7 +215,7 @@ public class DaoTest {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
             System.out.println("------------Please select the corresponding number to test（Find Menu of 3th）------------- ");
-            System.out.println("----1通过国家号疫苗号查接种情况--2查看所有接种情况--3回到上一级--");
+            System.out.println("----1通过国家号与疫苗号查接种情况--2查看所有接种情况--3回到上一级--");
         }
     }
 
@@ -225,12 +223,13 @@ public class DaoTest {
     public static void findAllCountry() {
         Vector<CountryDto> v = new Vector<>();
         v = sd.findAllCountry();
-        System.out.println("-----------所有国家信息如下----------------");
-        System.out.println("国家编号 国家姓名 \t国家人口 国家是否研发疫苗");
+        System.out.println("----------------所有国家信息如下--------------------------------------");
+        System.out.println("国家编号 \t国家姓名 \t\t国家人口 \t\t国家是否研发疫苗");
         for (CountryDto s : v) {
-            System.out.println(s.getCountry_id() + " \t" + s.getCountry_name() + " \t" + s.getPeople() + " \t" + s.getVac_able());
+//            System.out.println(" \t" +s.getCountry_id() + " \t" + s.getCountry_name() + " \t\t" + s.getPeople() + " \t" + s.getVac_able());
+            System.out.printf("%-13s%-14s%-23s%-2d\n",s.getCountry_id(),s.getCountry_name(),s.getPeople(),s.getVac_able());
         }
-        System.out.println("--------------------------------------------");
+        System.out.println("-------------------------------------------------------------------------");
     }
 
     //查找所有接种情况
@@ -240,7 +239,7 @@ public class DaoTest {
         System.out.println("-----------所有接种情况信息如下----------------");
         System.out.println("国家编号 疫苗编号 \t接种情况");
         for (C_VDto s : v) {
-            System.out.println(s.getCountry_id() + " \t" + s.getVac_id() + " \t" + s.getVac_Over_Num());
+            System.out.println(s.getCountry_id() + " \t\t" + s.getVac_id() + " \t" + s.getVac_Over_Num());
         }
         System.out.println("--------------------------------------------");
     }
@@ -249,10 +248,13 @@ public class DaoTest {
     public static void findAllVac() {
         Vector<VacDto> v = new Vector<>();
         v = cd.findAllVac();
-        System.out.println("-----------所有国家信息如下----------------");
-        System.out.println("疫苗编号 \t疫苗名");
+        System.out.println("-----------所有疫苗信息如下----------------");
+//        System.out.println("疫苗编号 \t\t疫苗名 \t\t产地 \t\t疫苗种类");
+        System.out.printf("%-15s%-19s%-12s%-5s\n","疫苗编号","疫苗名","产地","疫苗种类");
         for (VacDto s : v) {
-            System.out.println(" \t" + s.getVac_id() + " \t" + s.getVac_name() + " \t" + s.getVac_area() + " \t" + s.getVac_type());
+//            System.out.println(" \t" + s.getVac_id() + " \t" + s.getVac_name() + " \t" + s.getVac_area() + " \t" + s.getVac_type());
+            System.out.printf("    %-13s%-23s%-12s%-5s\n",s.getVac_id(),s.getVac_name(),s.getVac_area(),s.getVac_type());
+
         }
         System.out.println("--------------------------------------------");
     }
@@ -409,5 +411,4 @@ public class DaoTest {
         } else
             System.out.println("删除C_V接种信息失败");
     }
-
 }
