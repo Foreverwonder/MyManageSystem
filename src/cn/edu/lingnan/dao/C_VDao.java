@@ -8,17 +8,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import cn.edu.lingnan.dto.ScoreDto;
+import cn.edu.lingnan.dto.C_VDto;
 import cn.edu.lingnan.dto.CountryDto;
 import cn.edu.lingnan.util.DataAccess;
 
 /**
  * 对c_v表的数据操作类
  */
-public class ScoreDao {
+public class C_VDao {
 	//查找所有成绩
-	public Vector<ScoreDto> findAllScore() {
-		Vector<ScoreDto> v=new Vector<ScoreDto>();
+	public Vector<C_VDto> findAllVac_Over_Num() {
+		Vector<C_VDto> v=new Vector<C_VDto>();
 		Connection conn = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
@@ -28,9 +28,10 @@ public class ScoreDao {
 			prep = conn.prepareStatement(sql);
 			rs = prep.executeQuery();
 			while (rs.next()) {
-				ScoreDto s = new ScoreDto();
+				C_VDto s = new C_VDto();
 				s.setSid(rs.getString("country_id"));
 				s.setCid(rs.getString("vac_id"));
+				s.setVac_Over_Num(rs.getString("vac_over_num"));
 				v.add(s);
 			}
 
@@ -44,7 +45,7 @@ public class ScoreDao {
 
 
 	// 实现按country_id和vac_id查找成绩
-	public String findScoreBySidAndCid(String _country_id, String _vac_id) {
+	public String findVac_Over_NumBySidAndCid(String _country_id, String _vac_id) {
 		String _vac_over_num = null;
 		Connection conn = null;
 //		Statement stat = null;
@@ -53,8 +54,6 @@ public class ScoreDao {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn=DataAccess.getConnection();
-//			stat = conn.createStatement();
-//			String sql = "select * from c_v where country_id='" + _country_id + "' and vac_id='" + _vac_id + "'";
 			String sql = "select * from c_v where country_id=? and vac_id=?";
 			prep = conn.prepareStatement(sql);
 			prep.setString(1, _country_id);
@@ -88,7 +87,7 @@ public class ScoreDao {
 	// 插入一条分数信息
 	// 返回值的可能性：0、失败（没学生没课程）：1、成功：2、有学生没课程：3、有课程没学生4、主键约束
 
-	public int insertInfotoScore(ScoreDto _sd) {
+	public int insertInfotoC_V(C_VDto _sd) {
 		int flag = 0;
 		int flagCountry = 0;
 		int flagVac = 0;
@@ -97,7 +96,7 @@ public class ScoreDao {
 		ResultSet rs = null;
 		String _country_id = _sd.getSid();
 		String _vac_id = _sd.getCid();
-		String _vac_over_num = _sd.getScore();
+		String _vac_over_num = _sd.getVac_Over_Num();
 		try {
 			conn = DataAccess.getConnection();
 			// 查分数表
@@ -146,16 +145,16 @@ public class ScoreDao {
 		}
 		return flag;
 	}
-	//更新分数表
-	public int updataScore(ScoreDto _sd) {
+	//更新分数表(C_V表)
+	public int updataC_V(C_VDto _sd) {
 		int flag=0;
 		Connection conn = null;
 		PreparedStatement prep = null;
 		try {
 			conn = DataAccess.getConnection();
 			prep = conn.prepareStatement
-	("update c_v set c_v =? where country_id=? and vac_id=?");
-			prep.setString(1, _sd.getScore());
+	("update c_v set Vac_Over_Num =? where country_id=? and vac_id=?");
+			prep.setString(1, _sd.getVac_Over_Num());
 			prep.setString(2, _sd.getSid());
 			prep.setString(3, _sd.getCid());
 			prep.executeUpdate();

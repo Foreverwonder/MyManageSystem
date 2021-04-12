@@ -1,6 +1,6 @@
 package cn.edu.lingnan.dto;
 
-public class ScoreDto {
+public class C_VDto {
 	private String country_id;
 	private String vac_id;
 	private String vac_over_num;
@@ -16,10 +16,10 @@ public class ScoreDto {
 	public void setCid(String vac_id) {
 		this.vac_id = vac_id;
 	}
-	public String getScore() {
+	public String getVac_Over_Num() {
 		return vac_over_num;
 	}
-	public void setScore(String vac_over_num) {
+	public void setVac_Over_Num(String vac_over_num) {
 		this.vac_over_num = vac_over_num;
 	}
 }

@@ -277,7 +277,7 @@ public class CountryDao {
             //----------通过学生编号找到待删除的课程，存入动态数组中------------------------
             Vector<String> v = new Vector<String>();
             String sql0 =
-                    "select * from score where country_id=?";
+                    "select * from c_v where country_id=?";
             prep1 = conn.prepareStatement(sql0);
             prep1.setString(1, _country_id);
             rs1 = prep1.executeQuery();
@@ -289,7 +289,7 @@ public class CountryDao {
                 System.out.println(cid);
                 //找一下这个课程编号对应多少条记录，如果只有一条，就删除对应的课程编号
                 String sql01 =
-                        "select count(*) as num from score where cid=? ";
+                        "select count(*) as num from c_v where cid=? ";
                 prep2 = conn.prepareStatement(sql01);
                 prep2.setString(1, cid);
                 rs2 = prep2.executeQuery();
@@ -312,7 +312,7 @@ public class CountryDao {
             conn.setAutoCommit(false);
             //先删分数表
             String sql1 =
-                    "delete from score where country_id=?";
+                    "delete from c_v where country_id=?";
             prep1 = conn.prepareStatement(sql1);
             prep1.setString(1, _country_id);
             prep1.executeUpdate();
