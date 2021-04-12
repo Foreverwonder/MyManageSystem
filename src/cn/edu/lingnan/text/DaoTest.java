@@ -1,7 +1,6 @@
 package cn.edu.lingnan.text;
 /**
  * 要写一个删除成绩（V_C）才行
- * c_v表最后一项是null的bug(已经修复，此bug来自于New1test)
  *h还有很多Sid之类的没修改变量名字
  *
  */
@@ -134,7 +133,7 @@ public class DaoTest {
             } else if (str.equals("2")) {
                 deleteVac();
             } else if (str.equals("3")) {
-//                deleteC_V();
+                deleteC_V();
             } else if (str.equals("4")) {
                 break;
             } else {
@@ -409,4 +408,17 @@ public class DaoTest {
         } else
             System.out.println("删除课程信息失败");
     }
+    //----------------------删除成绩（三级菜单）------------------------------------------
+    public static void deleteC_V() throws SQLException {
+        System.out.println("请输入要删除的国家ID：");
+        String _country_id = scanf.nextLine();
+        System.out.println("请输入要删除的疫苗ID：");
+        String _vac_id = scanf.nextLine();
+
+        if (scd.deleteVac(_country_id, _vac_id) == true) {
+            System.out.println("删除C_V接种信息成功");
+        } else
+            System.out.println("删除C_V接种信息失败");
+    }
+
 }

@@ -166,4 +166,40 @@ public class C_VDao {
 		}
 		return flag;
 	}
+	//删除C_V表
+	public boolean deleteVac(String _country_id,String _vac_id) throws SQLException {
+		boolean flag = false;
+		Connection conn = null;
+		PreparedStatement prep1 = null;
+//		PreparedStatement prep2 = null;
+//		Statement stat = null;
+//		ResultSet rs1 = null;
+//		ResultSet rs2 = null;
+		try {
+			conn = DataAccess.getConnection();
+			String sql0 =
+//					"select count(*) as num from c_v where vac_id=?";
+					"delete from c_v where country_id=? and vac_id=?";
+			prep1 = conn.prepareStatement(sql0);
+			prep1.setString(1, _country_id);
+			prep1.setString(2, _vac_id);
+			prep1.executeUpdate();
+			flag = true;
+//			rs1.next();
+//			if (Integer.parseInt(rs1.getString("num")) == 0) {
+////                System.out.println("要删除的课程号：" + _vac_id);
+//				String sql1 = "delete from vac where vac_id=?";
+//				prep1 = conn.prepareStatement(sql1);
+//				prep1.setString(1, _vac_id);
+//				prep1.executeUpdate();
+//				flag = true;
+//			}
+			prep1.close();
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 }
