@@ -1,8 +1,45 @@
 package cn.edu.lingnan.text;
 /**
  *完结撒花
+ *
+ * 1.See the information--2.Add the information--3.Modify the information--4.Delete the information
+ *      1查找二级菜单
+ *  --------1查看国家--2查看疫苗--3查看接种情况--4回到上一级--
+ *              1、查找国家（三级菜单）
+ *                 -1通过姓名和人口查国家--2通过ID查找国家--3查看所有国家--4回到上一级
+ *              2、查看疫苗（三级菜单）
+ *                 -1通过疫苗号查疫苗--2查看所有疫苗--3回到上一级
+ *              3、查看接种情况 （三级菜单）
+ *                 -1通过国家号与疫苗号查接种情况--2查看所有接种情况--3回到上一级
+ *
+ *     2增加二级菜单
+ * ---------1增加国家--2增加疫苗--3增加接种情况--4回到上一级--
+ *              1、增加国家（三级菜单）
+ *              2、增加疫苗（三级菜单）
+ *              3、增加接种情况（三级菜单）
+ *
+ *     3更新二级菜单
+ *----------（三级菜单）1更新国家--2更新疫苗--3更新接种情况--4回到上一级--
+ *              （四级菜单）1更新国家名字--2更新国家人口--3更新国家是否研发疫苗--4回到上一级--
+ *                         2更新疫苗
+ *                         3更新接种情况
+ *
+ *     4删除二级菜单
+ *---------1删除国家--2删除疫苗--3删除接种情况--4回到上一级--
+ *              1删除国家（三菜）
+ *              2删除疫苗（三菜）
+ *              3删除接种情况（三菜）
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
 
+import cn.edu.lingnan.dao.PiDao;
 import cn.edu.lingnan.dao.VacDao;
 import cn.edu.lingnan.dao.C_VDao;
 import cn.edu.lingnan.dao.CountryDao;
@@ -19,6 +56,7 @@ public class DaoTest {
     public static CountryDao sd = new CountryDao();
     public static C_VDao scd = new C_VDao();
     public static VacDao cd = new VacDao();
+    public static PiDao pd = new PiDao();
 
     public static void main(String[] args) throws SQLException {
         System.out.println("-------------------Welcome to the World Vaccination Information Management System!------------- ");
@@ -37,7 +75,9 @@ public class DaoTest {
             } else if (str.equals("5")) {
                 System.out.println("GoodBye~ I'm looking forward to see you next time.");
                 System.exit(0);
-            } else {
+            } else if (str.equals("6")) {
+                Easter_egg();
+            }else {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
             System.out.println("-------------------Welcome to the World Vaccination Information Management System!------------- ");
@@ -134,7 +174,24 @@ public class DaoTest {
             System.out.println("----1删除国家--2删除疫苗--3删除接种情况--4回到上一级--");
         }
     }
-
+    public static void Easter_egg(){
+    System.out.println("------------欢迎来到Easter_egg(彩蛋)功能------------- ");
+    System.out.println("----1六位数--2三位字母(区分大小写)--3回到上一级--");
+        while (scanf.hasNextLine()) {
+            String str = scanf.nextLine();
+            if (str.equals("1")) {
+                sixNumber();
+            } else if (str.equals("2")) {
+                threeLetter();
+            }  else if (str.equals("3")) {
+                break;
+            } else {
+                System.out.println("您输入的信息有误！请重新输入！");
+            }
+            System.out.println("------------欢迎来到Easter_egg(彩蛋)功能------------- ");
+            System.out.println("----1六位数--2三位字母(区分大小写)--3回到上一级--");
+        }
+}
 
     //----------------------三级菜单-----------------------------------
 
@@ -311,7 +368,7 @@ public class DaoTest {
         } else
             System.out.println("新增疫苗信息失败(未知错误)");
     }
-    //---------------增加国家（三级三功能）---------------------------------
+    //---------------更新国家（三级三功能）---------------------------------
     public static void updateCountry() {
         System.out.println("------------Please select the corresponding number to test（Update Menu of 3th）------------- ");
         System.out.println("----1更新国家名字--2更新国家人口--3更新国家是否研发疫苗--4回到上一级--");
@@ -410,5 +467,13 @@ public class DaoTest {
             System.out.println("删除C_V接种信息成功");
         } else
             System.out.println("删除C_V接种信息失败");
+    }
+    public static void sixNumber(){
+        System.out.println("请输入六位数字：");
+        String _pi_num = scanf.nextLine();
+        pd.findPiNumber(_pi_num);
+    }
+    public static void threeLetter(){
+
     }
 }
