@@ -10,10 +10,10 @@ import java.util.Arrays;
 public class VacText {
 	public static void main(String[] args) throws SQLException {
 		VacDao cd =new VacDao();
-//		System.out.println(cd.findCnameByCid("c01"));
+//		System.out.println(cd.findVac_nameByVac_id("c01"));
 		VacDto c =new VacDto();
-//		c.setCid("c02");
-//		c.setCname("javaweb5");
+//		c.setVac_id("c02");
+//		c.setVac_name("javaweb5");
 //		System.out.println(cd.deleteVac("c02"));
 //		System.out.println(cd.insertInfoToVac(c));
 //		System.out.println(cd.updataVac(c));

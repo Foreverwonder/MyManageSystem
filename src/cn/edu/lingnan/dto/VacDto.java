@@ -1,7 +1,7 @@
 package cn.edu.lingnan.dto;
 
 /**
- * 对课程表vac进行信息传输
+ * 对疫苗表vac进行信息传输
  */
 public class VacDto {
     private String vac_id;
@@ -26,20 +26,20 @@ public class VacDto {
     }
 
 
-    public String getCid() {
+    public String getVac_id() {
         return vac_id;
     }
 
-    public void setCid(String vac_id) {
+    public void setVac_id(String vac_id) {
         this.vac_id = vac_id;
     }
 
 
-    public String getCname() {
+    public String getVac_name() {
         return vac_name;
     }
 
-    public void setCname(String vac_name) {
+    public void setVac_name(String vac_name) {
         this.vac_name = vac_name;
     }
 }

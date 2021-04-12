@@ -16,7 +16,7 @@ import cn.edu.lingnan.util.DataAccess;
  * 对c_v表的数据操作类
  */
 public class C_VDao {
-	//查找所有成绩
+	//查找所有接种情况
 	public Vector<C_VDto> findAllVac_Over_Num() {
 		Vector<C_VDto> v=new Vector<C_VDto>();
 		Connection conn = null;
@@ -29,12 +29,11 @@ public class C_VDao {
 			rs = prep.executeQuery();
 			while (rs.next()) {
 				C_VDto s = new C_VDto();
-				s.setSid(rs.getString("country_id"));
-				s.setCid(rs.getString("vac_id"));
+				s.setCountry_id(rs.getString("country_id"));
+				s.setVac_id(rs.getString("vac_id"));
 				s.setVac_Over_Num(rs.getString("vac_over_num"));
 				v.add(s);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -44,11 +43,10 @@ public class C_VDao {
 	}
 
 
-	// 实现按country_id和vac_id查找成绩
-	public String findVac_Over_NumBySidAndCid(String _country_id, String _vac_id) {
+	// 实现按country_id和vac_id查找接种情况
+	public String findVac_Over_NumByCountry_idAndVac_id(String _country_id, String _vac_id) {
 		String _vac_over_num = null;
 		Connection conn = null;
-//		Statement stat = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
 		try {
@@ -58,7 +56,6 @@ public class C_VDao {
 			prep = conn.prepareStatement(sql);
 			prep.setString(1, _country_id);
 			prep.setString(2, _vac_id);
-//			rs = stat.executeQuery(sql);
 			rs = prep.executeQuery();
 			if (rs.next())
 				_vac_over_num = rs.getString("vac_over_num");
@@ -84,8 +81,8 @@ public class C_VDao {
 		return _vac_over_num;
 	}
 
-	// 插入一条分数信息
-	// 返回值的可能性：0、失败（没学生没课程）：1、成功：2、有学生没课程：3、有课程没学生4、主键约束
+	// 插入一条接种情况信息
+	// 返回值的可能性：0、失败（没国家没疫苗）：1、成功：2、有国家没疫苗：3、有疫苗没国家4、主键约束
 
 	public int insertInfotoC_V(C_VDto _sd) {
 		int flag = 0;
@@ -94,12 +91,12 @@ public class C_VDao {
 		Connection conn = null;
 		PreparedStatement prep = null;
 		ResultSet rs = null;
-		String _country_id = _sd.getSid();
-		String _vac_id = _sd.getCid();
+		String _country_id = _sd.getCountry_id();
+		String _vac_id = _sd.getVac_id();
 		String _vac_over_num = _sd.getVac_Over_Num();
 		try {
 			conn = DataAccess.getConnection();
-			// 查分数表
+			// 查接种情况表
 			prep = conn.prepareStatement("select * from c_v where country_id=? and vac_id=?");
 			prep.setString(1, _country_id);
 			prep.setString(2, _vac_id);
@@ -108,7 +105,7 @@ public class C_VDao {
 				return 4;
 			rs.close();
 			prep.close();
-			// 查学生表
+			// 查国家表
 			prep = conn.prepareStatement("select * from country where country_id=?");
 			prep.setString(1, _country_id);
 			rs = prep.executeQuery();
@@ -116,7 +113,7 @@ public class C_VDao {
 				flagCountry = 1;
 			rs.close();
 			prep.close();
-			// 查课程表
+			// 查疫苗表
 			prep = conn.prepareStatement("select * from vac where vac_id=?");
 			prep.setString(1, _vac_id);
 			rs = prep.executeQuery();
@@ -145,7 +142,7 @@ public class C_VDao {
 		}
 		return flag;
 	}
-	//更新分数表(C_V表)
+	//更新接种情况表(C_V表)
 	public int updataC_V(C_VDto _sd) {
 		int flag=0;
 		Connection conn = null;
@@ -155,8 +152,8 @@ public class C_VDao {
 			prep = conn.prepareStatement
 	("update c_v set Vac_Over_Num =? where country_id=? and vac_id=?");
 			prep.setString(1, _sd.getVac_Over_Num());
-			prep.setString(2, _sd.getSid());
-			prep.setString(3, _sd.getCid());
+			prep.setString(2, _sd.getCountry_id());
+			prep.setString(3, _sd.getVac_id());
 			prep.executeUpdate();
 			flag=1;
 		} catch (SQLException e) {
@@ -171,29 +168,15 @@ public class C_VDao {
 		boolean flag = false;
 		Connection conn = null;
 		PreparedStatement prep1 = null;
-//		PreparedStatement prep2 = null;
-//		Statement stat = null;
-//		ResultSet rs1 = null;
-//		ResultSet rs2 = null;
 		try {
 			conn = DataAccess.getConnection();
 			String sql0 =
-//					"select count(*) as num from c_v where vac_id=?";
 					"delete from c_v where country_id=? and vac_id=?";
 			prep1 = conn.prepareStatement(sql0);
 			prep1.setString(1, _country_id);
 			prep1.setString(2, _vac_id);
 			prep1.executeUpdate();
 			flag = true;
-//			rs1.next();
-//			if (Integer.parseInt(rs1.getString("num")) == 0) {
-////                System.out.println("要删除的课程号：" + _vac_id);
-//				String sql1 = "delete from vac where vac_id=?";
-//				prep1 = conn.prepareStatement(sql1);
-//				prep1.setString(1, _vac_id);
-//				prep1.executeUpdate();
-//				flag = true;
-//			}
 			prep1.close();
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();

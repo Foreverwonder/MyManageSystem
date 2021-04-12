@@ -10,11 +10,11 @@ import cn.edu.lingnan.dto.C_VDto;
 import cn.edu.lingnan.util.DataAccess;
 
 /**
- * 对课表vac的操作类
+ * 对疫苗表vac的操作类
  */
 public class VacDao {
     //通过vac_id找name
-    public String findCnameByCid(String _vac_id) {
+    public String findVac_nameByVac_id(String _vac_id) {
         String _vac_area = null;
         String _vac_name = null;//增加了两项
         String _vac_type = null;//增加了两项
@@ -55,7 +55,7 @@ public class VacDao {
     }
 
 
-    //课程表插入一条信息
+    //疫苗表插入一条信息
     public int insertInfoToVac(VacDto _cd) {
         int flag = 0;
         Connection conn = null;
@@ -67,9 +67,9 @@ public class VacDao {
             String sql =
                     "insert into vac values(?,?,?,?)";
             prep = conn.prepareStatement(sql);
-            prep.setString(1, _cd.getCid());
+            prep.setString(1, _cd.getVac_id());
             prep.setString(2, _cd.getVac_area());
-            prep.setString(3, _cd.getCname());
+            prep.setString(3, _cd.getVac_name());
             prep.setString(4, _cd.getVac_type());
             int i = prep.executeUpdate();
             System.out.println("i=" + i);
@@ -94,7 +94,7 @@ public class VacDao {
         return flag;
     }
 
-    //更新课程表
+    //更新疫苗表
     //vac_id是主键
     public int updataVac(VacDto _sd) {
         int flag = 0;
@@ -104,8 +104,8 @@ public class VacDao {
             conn = DataAccess.getConnection();
             prep = conn.prepareStatement
                     ("update vac set vac_name =? where vac_id=?");
-            prep.setString(1, _sd.getCname());
-            prep.setString(2, _sd.getCid());
+            prep.setString(1, _sd.getVac_name());
+            prep.setString(2, _sd.getVac_id());
             prep.executeUpdate();
             flag = 1;
         } catch (SQLException e) {
@@ -117,7 +117,7 @@ public class VacDao {
     }
 
 
-    //删除课程表(若该vac_id在c_v表中只有0条记录，则直接删除，否则不删除)
+    //删除疫苗表(若该vac_id在c_v表中只有0条记录，则直接删除，否则不删除)
     public boolean deleteVac(String _vac_id) throws SQLException {
         boolean flag = false;
         Connection conn = null;
@@ -128,7 +128,7 @@ public class VacDao {
         ResultSet rs2 = null;
         try {
             conn = DataAccess.getConnection();
-            //----------通过学生编号找到待删除的课程，存入动态数组中------------------------
+            //----------通过国家编号找到待删除的疫苗，存入动态数组中------------------------
 //            Vector<String> v = new Vector<String>();
             String sql0 =
                     "select count(*) as num from c_v where vac_id=?";
@@ -137,7 +137,7 @@ public class VacDao {
             rs1 = prep1.executeQuery();
             rs1.next();
             if (Integer.parseInt(rs1.getString("num")) == 0) {
-//                System.out.println("要删除的课程号：" + _vac_id);
+//                System.out.println("要删除的疫苗号：" + _vac_id);
                 String sql1 = "delete from vac where vac_id=?";
                 prep1 = conn.prepareStatement(sql1);
                 prep1.setString(1, _vac_id);
@@ -153,7 +153,7 @@ public class VacDao {
         return flag;
     }
 
-    // 查找所有的课程信息（改）
+    // 查找所有的疫苗信息（改）
     public Vector<VacDto> findAllVac() {
         Vector<VacDto> v = new Vector<>();
         Connection conn = null;
@@ -166,9 +166,9 @@ public class VacDao {
             rs = prep.executeQuery();
             while (rs.next()) {
                 VacDto c = new VacDto();
-                c.setCid(rs.getString("vac_id"));
+                c.setVac_id(rs.getString("vac_id"));
                 c.setVac_area(rs.getString("vac_area"));
-                c.setCname(rs.getString("vac_name"));
+                c.setVac_name(rs.getString("vac_name"));
                 c.setVac_type(rs.getString("vac_type"));
 
                 v.add(c);
