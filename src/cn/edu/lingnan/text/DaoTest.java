@@ -2,7 +2,7 @@ package cn.edu.lingnan.text;
 /**
  *完结撒花
  *
- * 1.See the information--2.Add the information--3.Modify the information--4.Delete the information
+ * 1.See the information--2.Add the information--3.Modify the information--4.Delete the information--5.exit-----【6Easter_egg彩蛋】
  *      1查找二级菜单
  *  --------1查看国家--2查看疫苗--3查看接种情况--4回到上一级--
  *              1、查找国家（三级菜单）
@@ -26,16 +26,15 @@ package cn.edu.lingnan.text;
  *
  *     4删除二级菜单
  *---------1删除国家--2删除疫苗--3删除接种情况--4回到上一级--
- *              1删除国家（三菜）
- *              2删除疫苗（三菜）
- *              3删除接种情况（三菜）
+ *              1、删除国家（三菜）
+ *              2、删除疫苗（三菜）
+ *              3、删除接种情况（三菜）
+ *     5Exit
  *
- *
- *
- *
- *
- *
- *
+ *     6隐藏彩蛋
+ * --------1、π里寻找六位数--2、π里寻找三个英文字母--3回到上一级--
+ *              1、π里寻找六位数
+ *              2、π里寻找三个英文字母
  *
  */
 
@@ -175,8 +174,8 @@ public class DaoTest {
         }
     }
     public static void Easter_egg(){
-    System.out.println("------------欢迎来到Easter_egg(彩蛋)功能------------- ");
-    System.out.println("----1六位数--2三位字母(区分大小写)--3回到上一级--");
+    System.out.println("------------欢迎来到Easter_egg(隐藏彩蛋)功能------------- ");
+    System.out.println("----1、π里寻找六位数--2、π里寻找三个英文字母--3回到上一级--");
         while (scanf.hasNextLine()) {
             String str = scanf.nextLine();
             if (str.equals("1")) {
@@ -188,8 +187,8 @@ public class DaoTest {
             } else {
                 System.out.println("您输入的信息有误！请重新输入！");
             }
-            System.out.println("------------欢迎来到Easter_egg(彩蛋)功能------------- ");
-            System.out.println("----1六位数--2三位字母(区分大小写)--3回到上一级--");
+            System.out.println("------------欢迎来到Easter_egg(隐藏彩蛋)功能------------- ");
+            System.out.println("----1、π里寻找六位数--2、π里寻找三个英文字母--3回到上一级--");
         }
 }
 
@@ -469,11 +468,13 @@ public class DaoTest {
             System.out.println("删除C_V接种信息失败");
     }
     public static void sixNumber(){
-        System.out.println("请输入六位数字：");
+        System.out.println("请输入你想寻找的六位数字：");
         String _pi_num = scanf.nextLine();
         pd.findPiNumber(_pi_num);
     }
     public static void threeLetter(){
-
+        System.out.println("请输入你想寻找的三位字母：");
+        String _pi_letter = scanf.nextLine();
+        pd.findThreeLetter(_pi_letter);
     }
 }
